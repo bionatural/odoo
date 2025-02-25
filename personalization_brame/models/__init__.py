@@ -1,1 +1,2 @@
-from . import hr_eployee, res_partner
+from . import hr_eployee
+from . import res_partner
