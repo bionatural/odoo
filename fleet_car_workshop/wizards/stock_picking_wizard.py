@@ -27,6 +27,7 @@ class StockPickingWizard(models.TransientModel):
                 'name': line.product_id.name,
                 'product_id': line.product_id.id,
                 'product_uom_qty': line.quantity,
+                'quantity_done': line.quantity,  # Cantidad realizada                
                 'product_uom': line.product_id.uom_id.id,
                 'location_id': self.location_id.id,
                 'location_dest_id': self.location_dest_id.id,
