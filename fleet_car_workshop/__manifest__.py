@@ -38,6 +38,7 @@
         'data/mail_message_subtype_data.xml',
         'data/ir_cron_data.xml',
         'views/car_workshop_views.xml',
+        'views/stock_picking_wizard_views.xml',        
         'views/vehicle_details_views.xml',
         'views/res_config_settings_views.xml',
         'views/material_used_views.xml',
