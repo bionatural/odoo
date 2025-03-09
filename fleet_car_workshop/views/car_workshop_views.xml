@@ -12,6 +12,11 @@
                             class="btn-primary" invisible="state != 'waiting'"/>
                     <button class="btn-primary" name="cancel" string="Cancel"
                             type="object" invisible="state != 'waiting'"/>
+                    <!-- Botón nuevo para generar Stock Picking -->
+                    <button name="action_open_stock_picking_wizard"
+                            string="Generar Stock Picking"
+                            type="object"
+                            class="btn-primary"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="workshop_create_invoices,cancel"/>
                 </header>
