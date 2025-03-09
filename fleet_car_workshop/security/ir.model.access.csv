@@ -12,3 +12,4 @@ access_worksheet_stages_manager,worksheet.stages.manager,fleet_car_workshop.mode
 access_material_used_manager,material.used.manager,fleet_car_workshop.model_material_used,fleet_car_workshop.fleet_car_workshop_manager,1,1,1,1
 access_planned_work_manager,planned.work.manager,fleet_car_workshop.model_planned_work,fleet_car_workshop.fleet_car_workshop_manager,1,1,1,1
 access_stock_picking_wizard,Acceso Wizard Stock Picking,model_stock_picking_wizard,base.group_user,1,1,1,1
+access_stock_picking_wizard_line,Acceso Líneas Wizard Stock Picking,model_stock_picking_wizard_line,base.group_user,1,1,1,1
