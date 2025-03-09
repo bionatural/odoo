@@ -285,6 +285,21 @@ class CarWorkshop(models.Model):
                 move.action_assign()
                 move._action_done()
         return result
+    def action_open_stock_picking_wizard(self):
+        """ Abre el wizard para crear stock picking """
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Crear Stock Picking',
+            'res_model': 'stock.picking.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_workshop_id': self.id,
+                'default_picking_type_id': self.env['stock.picking.type'].search([], limit=1).id,
+                'default_location_id': self.env['stock.location'].search([('usage', '=', 'internal')], limit=1).id,
+                'default_location_dest_id': self.env['stock.location'].search([('usage', '=', 'customer')], limit=1).id,
+            },
+        }        
 
     @api.depends('works_done_ids.duration')
     def _compute_effective_hour(self):
