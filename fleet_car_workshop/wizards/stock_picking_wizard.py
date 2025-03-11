@@ -23,11 +23,10 @@ class StockPickingWizard(models.TransientModel):
             'picking_type_id': self.picking_type_id.id,
             'location_id': self.location_id.id,
             'location_dest_id': self.location_dest_id.id,
-            'move_ids': [(0, 0, {
-                'name': line.product_id.name,
+            'move_ids_without_package': [(0, 0, {
+                'name': line.product_id.display_name,
                 'product_id': line.product_id.id,
                 'product_uom_qty': line.quantity,
-                'quantity': line.quantity,  # Cantidad realizada                
                 'product_uom': line.product_id.uom_id.id,
                 'location_id': self.location_id.id,
                 'location_dest_id': self.location_dest_id.id,
@@ -37,7 +36,9 @@ class StockPickingWizard(models.TransientModel):
         picking = self.env['stock.picking'].create(picking_vals)
         picking.action_confirm()
         picking.action_assign()
-        picking.button_validate()
+
+        # No se valida el picking automáticamente para que quede en estado 'Listo'
+        # picking.button_validate()
 
         return {'type': 'ir.actions.act_window_close'}
 
