@@ -286,7 +286,6 @@ class CarWorkshop(models.Model):
                 move._action_done()
         return result
     def action_open_stock_picking_wizard(self):
-        """ Abre el wizard para crear stock picking """
         return {
             'type': 'ir.actions.act_window',
             'name': 'Crear Stock Picking',
@@ -299,7 +298,42 @@ class CarWorkshop(models.Model):
                 'default_location_id': self.env['stock.location'].search([('usage', '=', 'internal')], limit=1).id,
                 'default_location_dest_id': self.env['stock.location'].search([('usage', '=', 'customer')], limit=1).id,
             },
-        }        
+        }
+
+    def action_create_stock_picking(self):
+        for lines in self.materials_ids:
+            product_ids = self.env['product.product'].search([
+                ('id', '=', lines.material_product_id.id)
+            ])
+            for prod_id in product_ids:
+                move_id = self.env['stock.picking']
+                type_object = self.env['stock.picking.type']
+                company_id = self.env.context.get('company_id') or self.env.user.company_id.id
+                types = type_object.search([
+                    ('code', '=', 'outgoing'),
+                    ('warehouse_id.company_id', '=', company_id)
+                ], limit=1)
+                vals = {
+                    'partner_id': self.partner_id.id,
+                    'origin': self.name,
+                    'move_type': 'one',
+                    'picking_type_id': types.id,
+                    'location_id': types.default_location_src_id.id,
+                    'location_dest_id': self.partner_id.property_stock_customer.id,
+                    'move_ids': [(0, 0, {
+                        'name': self.name,
+                        'product_id': prod_id.id,
+                        'product_uom': prod_id.uom_id.id,
+                        'product_uom_qty': lines.quantity,
+                        'location_id': types.default_location_src_id.id,
+                        'location_dest_id': self.partner_id.property_stock_customer.id,
+                    })],
+                }
+                move = move_id.create(vals)
+                move.action_confirm()
+                move.action_assign()  # Deja el picking en estado "Listo" en lugar de validarlo directamente
+        return True
+      
 
     @api.depends('works_done_ids.duration')
     def _compute_effective_hour(self):
